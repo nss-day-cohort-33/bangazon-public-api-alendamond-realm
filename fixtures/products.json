@@ -8,6 +8,7 @@
         "description": "I don't know what to write.",
         "quantity": 100,
         "city": "Nashville",
+        "created_at": null,
         "image": null,
         "product_type": 1,
         "customer": 1
@@ -21,7 +22,8 @@
         "price": 5.00,
         "description": "All of the socks.",
         "quantity": 10000,
-        "city": "Mars",
+        "city": "Atlanta",
+        "created_at": null,
         "image": null,
         "product_type": 2,
         "customer": 2
@@ -36,6 +38,7 @@
         "description": "One big couch",
         "quantity": 1,
         "city": "New York City",
+        "created_at": null,
         "image": null,
         "product_type": 3,
         "customer": 3
@@ -49,7 +52,8 @@
         "price": 100,
         "description": "Blending some fruit.",
         "quantity": 100,
-        "city": "LA",
+        "city": "Brentwood",
+        "created_at": null,
         "image": null,
         "product_type": 4,
         "customer": 4
