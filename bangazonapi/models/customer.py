@@ -1,21 +1,24 @@
 from django.db import models
-from django.urls import reverse
+from django.db.models import F
+from django.contrib.auth.models import User
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+
 
 class Customer(models.Model):
 
-    first_name = models.CharField(max_length=55)
-    last_name = models.CharField(max_length=55)
-    email = models.CharField(max_length=55)
-    username = models.CharField(max_length=55)
-    address = models.CharField(max_length=55)
-    phone_number = models.IntegerField()
-    created_at = models.DateField()
-    is_active = models.BooleanField()
+    """
+    Creates table for customer
+    Author: Mary West
+    methods: none
+    """
 
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    address = models.CharField(max_length=55)
+    phone_number = models.CharField(max_length=55)
+
+    def __str__(self):
+        return f'{self.user.first_name} {self.user.last_name}'
 
     class Meta:
-        verbose_name = ("Customer")
-        verbose_name_plural = ("Customers")
-
-    def get_absolute_url(self):
-        return reverse("customer_details", kwargs={"pk": self.pk})
+        ordering = (F('user.date_joined').asc(nulls_last=True),)
