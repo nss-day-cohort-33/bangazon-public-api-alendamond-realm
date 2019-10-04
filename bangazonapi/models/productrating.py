@@ -1,7 +1,7 @@
 from django.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator
 from .product import Product
-from .customer import Customer
+from .customers import Customer
 
 ## Purpose: Joins customer and product tables
 ## Author: Curt Cato

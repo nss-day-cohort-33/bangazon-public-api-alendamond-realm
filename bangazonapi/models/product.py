@@ -1,5 +1,5 @@
 from django.db import models
-from .customer import Customer
+from .customers import Customer
 from .producttype import ProductType
 
 
