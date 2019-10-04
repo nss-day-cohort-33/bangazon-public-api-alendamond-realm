@@ -1,0 +1,38 @@
+[
+    {
+        "model": "bangazonapi.order",
+        "pk": 1,
+        "fields": {
+            "customer": 1,
+            "payment_type": 1,
+            "created_at": null
+        }
+    },
+    {
+        "model": "bangazonapi.order",
+        "pk": 2,
+        "fields": {
+            "customer": 2,
+            "payment_type": 2,
+            "created_at": null
+        }
+    },
+    {
+        "model": "bangazonapi.order",
+        "pk": 3,
+        "fields": {
+            "customer": 3,
+            "payment_type": 3,
+            "created_at": null
+        }
+    },
+    {
+        "model": "bangazonapi.order",
+        "pk": 4,
+        "fields": {
+            "customer": 4,
+            "payment_type": 4,
+            "created_at": null
+        }
+    }
+]
