@@ -1,0 +1,92 @@
+[
+  {
+    "model": "auth.user",
+    "pk": 1,
+    "fields": {
+      "password": "password",
+      "last_login": null,
+      "is_superuser": true,
+      "username": "admin",
+      "first_name": "admin",
+      "last_name": "admin",
+      "email": "admin@bangazon.com",
+      "is_active": true,
+      "date_joined": "2019-10-04 15:39:20.201988"
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 2,
+    "fields": {
+      "password": "password1",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "amber",
+      "first_name": "Amber",
+      "last_name": "Gooch",
+      "email": "amber@bangazon.com",
+      "is_active": true,
+      "date_joined": "2019-11-23T14:06:35.047Z"
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 3,
+    "fields": {
+      "password": "password2",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "curt",
+      "first_name": "Curt",
+      "last_name": "Cato",
+      "email": "curt@bangazon.com",
+      "is_active": true,
+      "date_joined": "2019-12-23T14:06:30.047Z"
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 4,
+    "fields": {
+      "password": "password3",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "joy",
+      "first_name": "Joy",
+      "last_name": "Ittycheriah",
+      "email": "joy@bangazon.com",
+      "is_active": true,
+      "date_joined": "2019-09-23T14:06:30.047Z"
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 5,
+    "fields": {
+      "password": "password4",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "matthew",
+      "first_name": "Matthew",
+      "last_name": "McDevitt",
+      "email": "matthew@bangazon.com",
+      "is_active": true,
+      "date_joined": "2019-08-23T14:06:30.047Z"
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 6,
+    "fields": {
+      "password": "password5",
+      "last_login": null,
+      "is_superuser": false,
+      "username": "mary",
+      "first_name": "Mary",
+      "last_name": "West",
+      "email": "mary@bangazon.com",
+      "is_active": true,
+      "date_joined": "2019-07-23T14:06:30.047Z"
+    }
+  }
+]
