@@ -10,3 +10,32 @@ obj
 dist
 AlendamondEnv
 
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Django stuff:
+*.log
+local_settings.py
+
+# pyenv
+.python-version
+
+# dotenv
+.env
+
+# virtualenv
+Bangazon2Env
+
+.DS_Store
+media/
+*.pyc
+*.db
+*.pid
+
+# django migrations
+migrations
+
+#db location
+views/connection.py
