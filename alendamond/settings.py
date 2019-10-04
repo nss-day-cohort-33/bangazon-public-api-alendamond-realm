@@ -40,7 +40,6 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'corsheaders',
-    'djmoney',
     'bangazonapi',
 ]
 REST_FRAMEWORK = {
