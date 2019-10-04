@@ -8,7 +8,12 @@ obj
 *.sqlite3
 .vscode
 dist
+
+# virtualenv
+Bangazon2Env
 AlendamondEnv
+
+#These are the files that Joe S shared on slack to put in gitignore----
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
