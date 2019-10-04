@@ -1,0 +1,30 @@
+[
+    {
+        "model": "bangazonapi.producttype",
+        "pk": 1,
+        "fields": {
+          "name": "Electronics"
+        }
+    },
+    {
+        "model": "bangazonapi.producttype",
+        "pk": 2,
+        "fields": {
+            "name": "Clothing"
+        }
+    },
+    {
+        "model": "bangazonapi.producttype",
+        "pk": 3,
+        "fields": {
+            "name": "Furniture"
+        }
+    },
+    {
+        "model": "bangazonapi.producttype",
+        "pk": 4,
+        "fields": {
+            "name": "Appliances"
+        }
+    }
+]
