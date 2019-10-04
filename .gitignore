@@ -11,7 +11,21 @@ dist
 
 # virtualenv
 Bangazon2Env
+.DS_Store
+*.py[cod]
+*$py.class
+pip-log.txt
+pip-delete-this-directory.txt
+*.log
+local_settings.py
+.python-version
+.env
+media/
+*.db
+*.pid
+migrations
 AlendamondEnv
+BangazonEnv
 
 #These are the files that Joe S shared on slack to put in gitignore----
 
