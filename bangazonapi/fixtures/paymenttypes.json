@@ -1,0 +1,46 @@
+[
+    {
+        "model": "bangazonapi.paymenttype",
+        "pk": 1,
+        "fields": {
+            "merchant_name": "Visa",
+            "acct_number": "111-111-1111",
+            "created_at": "",
+            "expiration_date": "2019-12-25",
+            "customer": 1
+        }
+    },
+    {
+        "model": "bangazonapi.paymenttype",
+        "pk": 2,
+        "fields": {
+            "merchant_name": "Mastercard",
+            "acct_number": "222-222-2222",
+            "created_at": "",
+            "expiration_date": "2019-12-25",
+            "customer": 2
+        }
+    },
+    {
+        "model": "bangazonapi.paymenttype",
+        "pk": 3,
+        "fields": {
+            "merchant_name": "American Express",
+            "acct_number": "333-333-3333",
+            "created_at": "",
+            "expiration_date": "2019-12-27",
+            "customer": 3
+        }
+    },
+    {
+        "model": "bangazonapi.paymenttype",
+        "pk": 4,
+        "fields": {
+            "merchant_name": "Wilson Bank",
+            "acct_number": "444-444-4444",
+            "created_at": "",
+            "expiration_date": "2019-12-28",
+            "customer": 4
+        }
+    }
+]
