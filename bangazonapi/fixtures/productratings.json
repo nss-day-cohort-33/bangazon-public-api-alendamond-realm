@@ -1,0 +1,38 @@
+[
+    {
+        "model": "bangazonapi.productrating",
+        "pk": 1,
+        "fields": {
+            "product": 1,
+            "customer": 1,
+            "rating": 4
+        }
+    },
+    {
+        "model": "bangazonapi.productrating",
+        "pk": 2,
+        "fields": {
+            "product": 2,
+            "customer": 2,
+            "rating": 3
+        }
+    },
+    {
+        "model": "bangazonapi.productrating",
+        "pk": 3,
+        "fields": {
+            "product": 3,
+            "customer": 3,
+            "rating": 5
+        }
+    },
+    {
+        "model": "bangazonapi.productrating",
+        "pk": 4,
+        "fields": {
+            "product": 4,
+            "customer": 4,
+            "rating": 1
+        }
+    }
+]

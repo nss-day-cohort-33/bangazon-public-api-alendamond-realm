@@ -1,0 +1,62 @@
+[
+    {
+      "model": "bangazonapi.product",
+      "pk": 1,
+      "fields": {
+        "name": "headphones 99",
+        "price": 300.89,
+        "description": "I don't know what to write.",
+        "quantity": 100,
+        "city": "Nashville",
+        "created_at": null,
+        "image": null,
+        "product_type": 1,
+        "customer": 1
+      }
+    },
+    {
+      "model": "bangazonapi.product",
+      "pk": 2,
+      "fields": {
+        "name": "Socks",
+        "price": 5.00,
+        "description": "All of the socks.",
+        "quantity": 10000,
+        "city": "Atlanta",
+        "created_at": null,
+        "image": null,
+        "product_type": 2,
+        "customer": 2
+      }
+    },
+    {
+      "model": "bangazonapi.product",
+      "pk": 3,
+      "fields": {
+        "name": "Couch",
+        "price": 3000,
+        "description": "One big couch",
+        "quantity": 1,
+        "city": "New York City",
+        "created_at": null,
+        "image": null,
+        "product_type": 3,
+        "customer": 3
+      }
+    },
+    {
+      "model": "bangazonapi.product",
+      "pk": 4,
+      "fields": {
+        "name": "Blender",
+        "price": 100,
+        "description": "Blending some fruit.",
+        "quantity": 100,
+        "city": "Brentwood",
+        "created_at": null,
+        "image": null,
+        "product_type": 4,
+        "customer": 4
+      }
+    }
+  ]

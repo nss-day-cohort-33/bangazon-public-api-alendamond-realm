@@ -21,7 +21,6 @@ local_settings.py
 .python-version
 .env
 media/
-*.db
 *.pid
 migrations
 AlendamondEnv
@@ -58,3 +57,4 @@ migrations
 
 #db location
 views/connection.py
+BangazonEnv
