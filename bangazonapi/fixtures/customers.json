@@ -9,30 +9,48 @@
     }
   },
   {
-      "model": "bangazonapi.customer",
-      "pk": 2,
-      "fields": {
-        "user": 2,
-        "address":"124 Plain Street, Brentwood TN, 37027",
-        "phone_number": "858-761-2014"
-      }
-    },
-    {
-      "model": "bangazonapi.customer",
-      "pk": 3,
-      "fields": {
-        "user": 3,
-        "address":"123 Main Street, Brentwood TN, 37027",
-        "phone_number": "858-761-2016"
-      }
-    },
-    {
-      "model": "bangazonapi.customer",
-      "pk": 4,
-      "fields": {
-        "user": 4,
-        "address":"135 Cain Street, Brentwood TN, 37027",
-        "phone_number": "858-761-2018"
-      }
+    "model": "bangazonapi.customer",
+    "pk": 2,
+    "fields": {
+      "user": 2,
+      "address":"124 Plain Street, Brentwood TN, 37027",
+      "phone_number": "858-761-2014"
     }
+  },
+  {
+    "model": "bangazonapi.customer",
+    "pk": 3,
+    "fields": {
+      "user": 3,
+      "address":"123 Main Street, Brentwood TN, 37027",
+      "phone_number": "858-761-2016"
+    }
+  },
+  {
+    "model": "bangazonapi.customer",
+    "pk": 4,
+    "fields": {
+      "user": 4,
+      "address":"135 Cain Street, Brentwood TN, 37027",
+      "phone_number": "858-761-2018"
+    }
+  },
+  {
+    "model": "bangazonapi.customer",
+    "pk": 5,
+    "fields": {
+      "user": 5,
+      "address":"1555 Main Street, Brentwood TN, 37027",
+      "phone_number": "858-761-2017"
+    }
+  },
+  {
+    "model": "bangazonapi.customer",
+    "pk": 6,
+    "fields": {
+      "user": 6,
+      "address":"135 Lane Street, Brentwood TN, 37027",
+      "phone_number": "858-761-2020"
+    }
+  }
 ]
