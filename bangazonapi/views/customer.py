@@ -15,7 +15,7 @@ class CustomerSerializer(serializers.HyperlinkedModelSerializer):
         serializers
     """
 
-    customers = serializers.HyperlinkedRelatedField(
+    users = serializers.HyperlinkedRelatedField(
         queryset=User.objects.all(),
         view_name="user-detail",
         many=False,
@@ -28,7 +28,7 @@ class CustomerSerializer(serializers.HyperlinkedModelSerializer):
             view_name='customer',
             lookup_field='id'
         )
-        fields = ('id', 'url', 'phone_number', 'address', 'user_id', 'first_name', 'last_name', 'username', 'date_joined', 'is_active')
+        fields = ('id', 'url', 'phone_number', 'address', 'user_id','users')
         depth = 1
 
 class Customers(ViewSet):
