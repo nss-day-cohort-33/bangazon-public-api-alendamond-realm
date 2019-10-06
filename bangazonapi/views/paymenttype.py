@@ -1,5 +1,4 @@
 """View module for handling requests about payment types"""
-from django.contrib.auth.models import User
 from django.http import HttpResponseServerError
 from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
@@ -50,8 +49,10 @@ class PaymentTypes(ViewSet):
         new_payment_type.merchant_name = request.data["merchant_name"]
         new_payment_type.acct_number = request.data["acct_number"]
         new_payment_type.expiration_date = request.data["expiration_date"]
+        new_payment_type.customer = Customer.objects.get(
+            user=request.auth.user)
 
-        customer = Customer.objects.get(pk=request.data["customer"])
+        # customer = Customer.objects.get(pk=request.data["customer"])
         new_payment_type.customer = customer
         new_payment_type.save()
 
