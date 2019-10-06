@@ -21,6 +21,7 @@ class CustomerSerializer(serializers.HyperlinkedModelSerializer):
             lookup_field='id'
         )
         fields = ('id', 'url', 'phone_number', 'address', 'user_id')
+        depth = 1
 
 class Customers(ViewSet):
     """Park Areas for Kennywood Amusement Park"""
