@@ -14,13 +14,21 @@ class CustomerSerializer(serializers.HyperlinkedModelSerializer):
     Arguments:
         serializers
     """
+
+    customers = serializers.HyperlinkedRelatedField(
+        queryset=User.objects.all(),
+        view_name="user-detail",
+        many=False,
+        required=False,
+        lookup_field="pk"
+    )
     class Meta:
         model = Customer
         url = serializers.HyperlinkedIdentityField(
             view_name='customer',
             lookup_field='id'
         )
-        fields = ('id', 'url', 'phone_number', 'address', 'user_id')
+        fields = ('id', 'url', 'phone_number', 'address', 'user_id', 'first_name', 'last_name', 'username', 'date_joined', 'is_active')
         depth = 1
 
 class Customers(ViewSet):
