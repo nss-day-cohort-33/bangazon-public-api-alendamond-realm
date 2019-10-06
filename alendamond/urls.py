@@ -7,6 +7,7 @@ from bangazonapi.views import *
 router = routers.DefaultRouter(trailing_slash=False)
 router.register(r'paymenttypes', PaymentTypes, 'paymenttype')
 router.register(r'orders', Orders, 'order')
+router.register(r'products', ProductData, 'product')
 
 urlpatterns = [
     url(r'^', include(router.urls)),
