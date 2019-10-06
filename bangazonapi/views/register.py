@@ -2,8 +2,8 @@ import json
 from django.http import HttpResponse
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.models import User
-from django.views.decorators.csrf import csrf_exempt
 from rest_framework.authtoken.models import Token
+from django.views.decorators.csrf import csrf_exempt
 from bangazonapi.models import Customer
 
 

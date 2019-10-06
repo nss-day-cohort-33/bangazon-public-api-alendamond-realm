@@ -1,11 +1,13 @@
 from django.conf.urls import url, include
 from rest_framework import routers
 from rest_framework.authtoken.views import obtain_auth_token
-# from bangazonapi.models import *
-from bangazonapi.views import register_user, login_user
-from bangazonapi.views import ProductTypes
+from bangazonapi.models import *
+from bangazonapi.views import *
 
 router = routers.DefaultRouter(trailing_slash=False)
+router.register(r'paymenttypes', PaymentTypes, 'paymenttype')
+router.register(r'orders', Orders, 'order')
+router.register(r'products', ProductData, 'product')
 router.register(r'producttypes', ProductTypes, 'producttype')
 
 urlpatterns = [
