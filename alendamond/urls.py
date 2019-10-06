@@ -2,14 +2,10 @@ from django.conf.urls import url, include
 from rest_framework import routers
 from rest_framework.authtoken.views import obtain_auth_token
 from bangazonapi.models import *
-from bangazonapi.views import Customers
+from bangazonapi.views import register_user, login_user, Orders, Customers
 
 router = routers.DefaultRouter(trailing_slash=False)
 router.register(r'customers', Customers, 'customer')
-from bangazonapi.views import register_user, login_user, Orders
-
-
-router = routers.DefaultRouter(trailing_slash=False)
 router.register(r'orders', Orders, 'order')
 
 urlpatterns = [
