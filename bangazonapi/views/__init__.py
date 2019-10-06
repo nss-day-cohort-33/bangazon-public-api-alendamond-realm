@@ -1,1 +1,1 @@
-from .paymenttype import ListPaymentTypes
+from .paymenttype import PaymentTypes

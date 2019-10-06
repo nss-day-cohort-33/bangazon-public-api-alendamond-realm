@@ -1,14 +1,15 @@
 """View module for handling requests about payment types"""
+from django.contrib.auth.models import User
 from django.http import HttpResponseServerError
 from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import serializers
 from rest_framework import status
-from bangazonapi.models import PaymentType
+from bangazonapi.models import *
 
 
 class PaymentTypeSerializer(serializers.HyperlinkedModelSerializer):
-    """JSON serializer for Payment Type
+    """JSON serializer for Payment Types
 
     Author: Joy Ittycheriah
     methods: none
@@ -22,72 +23,84 @@ class PaymentTypeSerializer(serializers.HyperlinkedModelSerializer):
             view_name='paymenttype',
             lookup_field='id'
         )
-        fields = ('id', 'url', 'merchant_name',
-                  'acct_number', 'created_at', 'expiration_date', 'customer')
+        fields = ('id', 'url', 'merchant_name', 'acct_number',
+                  'created_at', 'expiration_date', 'customer')
+        depth = 1
 
 
-class ListPaymentTypes(ViewSet):
+class PaymentTypes(ViewSet):
     """Payment Types for Bangazon"""
 
-    # def create(self, request):
-    #     """Handle POST operations
+    def create(self, request):
+        """Handle POST operations
 
-    #     Returns:
-    #         Response -- JSON serialized ParkArea instance
-    #     """
-    #     new_payment_type = PaymentType()
-    #     new_payment_type.merchant_name = request.data["merchant_name"]
-    #     new_payment_type.acct_number = request.data["acct_number"]
-    #     new_payment_type.save()
+        Returns:
+            Response -- JSON serialized Payment Type instance
+        """
+        new_payment_type = PaymentType()
+        new_payment_type.merchant_name = request.data["merchant_name"]
+        new_payment_type.acct_number = request.data["acct_number"]
+        new_payment_type.expiration_date = request.data["expiration_date"]
 
-    #     serializer = PaymentTypeSerializer(new_payment_type, context={'request': request})
+        customer = Customer.objects.get(pk=request.data["customer"])
+        new_payment_type.customer = customer
+        new_payment_type.save()
 
-    #     return Response(serializer.data)
+        serializer = PaymentTypeSerializer(
+            new_payment_type, context={'request': request})
 
-    # def retrieve(self, request, pk=None):
-    #     """Handle GET requests for single payment type
+        return Response(serializer.data)
 
-    #     Returns:
-    #         Response -- JSON serialized payment type instance
-    #     """
-    #     try:
-    #         new_payment_type = PaymentType.objects.get(pk=pk)
-    #         serializer = PaymentTypeSerializer(
-    #             area, context={'request': request})
-    #         return Response(serializer.data)
-    #     except Exception as ex:
-    #         return HttpResponseServerError(ex)
+    def retrieve(self, request, pk=None):
+        """Handle GET requests for a single payment type
 
-    # def update(self, request, pk=None):
-    #     """Handle PUT requests for a park area
+        Returns:
+            Response -- JSON serialized payment type instance
+        """
+        try:
+            payment_type = PaymentType.objects.get(pk=pk)
+            serializer = PaymentTypeSerializer(
+                payment_type, context={'request': request})
+            return Response(serializer.data)
+        except Exception as ex:
+            return HttpResponseServerError(ex)
 
-    #     Returns:
-    #         Response -- Empty body with 204 status code
-    #     """
-    #     area = ParkArea.objects.get(pk=pk)
-    #     area.name = request.data["name"]
-    #     area.theme = request.data["theme"]
-    #     area.save()
+    def update(self, request, pk=None):
+        """Handle PUT requests for a single payment type
 
-    #     return Response({}, status=status.HTTP_204_NO_CONTENT)
+        Returns:
+            Response -- Empty body with 204 status code
+        """
+        update_payment_type = PaymentType.objects.get(pk=pk)
 
-    # def destroy(self, request, pk=None):
-    #     """Handle DELETE requests for a single park area
+        customer = Customer.objects.get(pk=request.data["customer"])
 
-    #     Returns:
-    #         Response -- 200, 404, or 500 status code
-    #     """
-    #     try:
-    #         area = ParkArea.objects.get(pk=pk)
-    #         area.delete()
+        update_payment_type.merchant_name = request.data["merchant_name"]
+        update_payment_type.acct_number = request.data["acct_number"]
+        update_payment_type.expiration_date = request.data["expiration_date"]
 
-    #         return Response({}, status=status.HTTP_204_NO_CONTENT)
+        update_payment_type.customer = customer
+        update_payment_type.save()
 
-    #     except ParkArea.DoesNotExist as ex:
-    #         return Response({'message': ex.args[0]}, status=status.HTTP_404_NOT_FOUND)
+        return Response({}, status=status.HTTP_204_NO_CONTENT)
 
-    #     except Exception as ex:
-    #         return Response({'message': ex.args[0]}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    def destroy(self, request, pk=None):
+        """Handle DELETE requests for a single payment type
+
+        Returns:
+            Response -- 200, 404, or 500 status code
+        """
+        try:
+            this_payment_type = PaymentType.objects.get(pk=pk)
+            this_payment_type.delete()
+
+            return Response({}, status=status.HTTP_204_NO_CONTENT)
+
+        except PaymentType.DoesNotExist as ex:
+            return Response({'message': ex.args[0]}, status=status.HTTP_404_NOT_FOUND)
+
+        except Exception as ex:
+            return Response({'message': ex.args[0]}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def list(self, request):
         """Handle GET requests to payment types resource
@@ -95,7 +108,13 @@ class ListPaymentTypes(ViewSet):
         Returns:
             Response -- JSON serialized list of payment types
         """
-        paymenttype = PaymentType.objects.all()
+        payment_types = PaymentType.objects.all()
+
+        # Support filtering payment types by customer
+        this_customer = self.request.query_params.get('customer', None)
+        if this_customer is not None:
+            payment_types = payment_types.filter(customer=this_customer)
+
         serializer = PaymentTypeSerializer(
-            paymenttype, many=True, context={'request': request})
+            payment_types, many=True, context={'request': request})
         return Response(serializer.data)
