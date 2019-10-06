@@ -44,20 +44,18 @@ class ProductData(ViewSet):
             Response -- JSON serialized product instance
         """
     def create(self, request):
-        newproduct = Product()
-        customer = Customer.objects.get(user=request.auth.user)
-        product_type = ProductType.objects.get(user=request.auth.user)
-        newproduct.name = request.data["name"]
-        newproduct.price = request.data["price"]
-        newproduct.description = request.data['description']
-        newproduct.quantity = request.data['quantity ']
-        newproduct.city = request.data['city']
-        newproduct.created_at = request.data['created_at']
-        newproduct.image = request.data['image']
-        newproduct.product_type = product_type
-        newproduct.customer = customer
-        newproduct.save()
-        serializer = ProductSerializer(newproduct, context={'request': request})
+        new_product = Product()
+        new_product.customer = Customer.objects.get(user=request.auth.user)
+        new_product.product_type = ProductType.objects.get(pk=request.data['product_type'])
+        new_product.name = request.data["name"]
+        new_product.price = request.data["price"]
+        new_product.description = request.data['description']
+        new_product.quantity = request.data['quantity']
+        new_product.city = request.data['city']
+        new_product.created_at = request.data['created_at']
+        new_product.image = request.data['image']
+        new_product.save()
+        serializer = ProductSerializer(new_product, context={'request': request})
         return Response(serializer.data)
 
     def retrieve(self, request, pk=None):
