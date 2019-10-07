@@ -17,13 +17,13 @@ class PaymentTypeSerializer(serializers.HyperlinkedModelSerializer):
         serializers
     """
 
-    customer = serializers.HyperlinkedRelatedField(
-        queryset=Customer.objects.all(),
-        view_name="customer-detail",
-        many=True,
-        required=False,
-        lookup_field="pk"
-    )
+    # customer = serializers.HyperlinkedRelatedField(
+    #     queryset=Customer.objects.all(),
+    #     view_name="customer-detail",
+    #     many=True,
+    #     required=False,
+    #     lookup_field="pk"
+    # )
 
     class Meta:
         model = PaymentType
@@ -31,8 +31,8 @@ class PaymentTypeSerializer(serializers.HyperlinkedModelSerializer):
             view_name='paymenttype',
             lookup_field='id'
         )
-        fields = ('id', 'url', 'merchant_name', 'acct_number',
-                  'created_at', 'expiration_date', 'customer')
+        fields = ('id', 'merchant_name', 'acct_number',
+                  'created_at', 'expiration_date', 'customer_id')
         depth = 1
 
 
