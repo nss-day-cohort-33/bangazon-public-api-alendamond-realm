@@ -15,20 +15,13 @@ class CustomerSerializer(serializers.HyperlinkedModelSerializer):
         serializers
     """
 
-    users = serializers.HyperlinkedRelatedField(
-        queryset=User.objects.all(),
-        view_name="user-detail",
-        many=False,
-        required=False,
-        lookup_field="pk"
-    )
     class Meta:
         model = Customer
         url = serializers.HyperlinkedIdentityField(
             view_name='customer',
             lookup_field='id'
         )
-        fields = ('id', 'url', 'phone_number', 'address', 'user_id','users')
+        fields = ('id', 'phone_number', 'address', 'user_id')
         depth = 1
 
 class Customers(ViewSet):
@@ -48,6 +41,43 @@ class Customers(ViewSet):
         serializer = CustomerSerializer(new_customer, context={'request': request})
 
         return Response(serializer.data)
+
+    def update(self, request, pk=None):
+        """Handle PUT requests for a single payment type
+
+        Returns:
+            Response -- Empty body with 204 status code
+        """
+        update_customer = Customer.objects.get(pk=pk)
+
+        user = User.objects.get(pk=request.data["user_id"])
+
+        update_customer.address = request.data["address"]
+        update_customer.phone_number = request.data["phone_number"]
+
+        update_customer.user = user
+        update_customer.save()
+
+        return Response({}, status=status.HTTP_204_NO_CONTENT)
+
+    def destroy(self, request, pk=None):
+        """Handle DELETE requests for a order are
+
+        Returns:
+            Response -- 200, 404, or 500 status code
+        """
+        try:
+            customer = Customer.objects.get(pk=pk)
+            customer.delete()
+
+            return Response({}, status=status.HTTP_204_NO_CONTENT)
+
+        except Customer.DoesNotExist as ex:
+            return Response({'message': ex.args[0]}, status=status.HTTP_404_NOT_FOUND)
+
+        except Exception as ex:
+            return Response({'message': ex.args[0]}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 
     def retrieve(self, request, pk=None):
         """Handle GET requests for single customer
@@ -72,6 +102,4 @@ class Customers(ViewSet):
         serializer = CustomerSerializer(
             customers, many=True, context={'request': request})
         return Response(serializer.data)
-
-
 
