@@ -10,21 +10,6 @@ class ProductSerializer(serializers.HyperlinkedModelSerializer):
         Arguments:
         serializers.HyperlinkedModelSerializer
     """
-    product_type = serializers.HyperlinkedRelatedField(
-        queryset=ProductType.objects.all(),
-        view_name="producttype-detail",
-        many=True,
-        required=False,
-        lookup_field="pk"
-    )
-
-    customer = serializers.HyperlinkedRelatedField(
-        queryset=Customer.objects.all(),
-        view_name="customer-detail",
-        many=True,
-        required=False,
-        lookup_field="pk"
-    )
 
     class Meta:
         model = Product
@@ -33,8 +18,8 @@ class ProductSerializer(serializers.HyperlinkedModelSerializer):
         lookup_field='id'
         )
 
-        fields = ('id', 'url', 'name', 'price', 'description', 'quantity',
-        'city', 'created_at', 'image', 'product_type', 'customer')
+        fields = ('id', 'name', 'price', 'description', 'quantity',
+        'city', 'created_at', 'image', 'product_type_id', 'customer_id')
         depth = 1
 
 
@@ -46,7 +31,7 @@ class ProductData(ViewSet):
     def create(self, request):
         new_product = Product()
         new_product.customer = Customer.objects.get(user=request.auth.user)
-        new_product.product_type = ProductType.objects.get(pk=request.data['product_type'])
+        new_product.product_type = ProductType.objects.get(pk=request.data['product_type_id'])
         new_product.name = request.data["name"]
         new_product.price = request.data["price"]
         new_product.description = request.data['description']
@@ -79,12 +64,12 @@ class ProductData(ViewSet):
         product.name = request.data["name"]
         product.price = request.data["price"]
         product.description = request.data['description']
-        product.quantity = request.data['quantity ']
+        product.quantity = request.data['quantity']
         product.city = request.data['city']
         product.created_at = request.data['created_at']
         product.image = request.data['image']
-        product.product_type = request.data['product_type']
-        product.customer = request.data['customer']
+        product.product_type = ProductType.objects.get(pk=request.data['product_type_id'])
+        product.customer = Customer.objects.get(user=request.auth.user)
         product.save()
 
         return Response({}, status=status.HTTP_204_NO_CONTENT)
