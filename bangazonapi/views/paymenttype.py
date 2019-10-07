@@ -83,7 +83,7 @@ class PaymentTypes(ViewSet):
         """
         update_payment_type = PaymentType.objects.get(pk=pk)
 
-        customer = Customer.objects.get(pk=request.data["customer"])
+        customer = Customer.objects.get(user=request.auth.user)
 
         update_payment_type.merchant_name = request.data["merchant_name"]
         update_payment_type.acct_number = request.data["acct_number"]
