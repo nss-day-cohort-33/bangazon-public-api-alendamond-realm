@@ -14,21 +14,6 @@ class OrderSerializer(serializers.HyperlinkedModelSerializer):
     Arguments:
         serializers
     """
-    customer = serializers.HyperlinkedRelatedField(
-        queryset=Customer.objects.all(),
-        view_name="customer-detail",
-        many=True,
-        required=False,
-        lookup_field="pk"
-    )
-
-    payment_type = serializers.HyperlinkedRelatedField(
-        queryset=PaymentType.objects.all(),
-        view_name="payment_type-detail",
-        many=True,
-        required=False,
-        lookup_field="pk"
-    )
 
     class Meta:
         model = Order
@@ -36,8 +21,8 @@ class OrderSerializer(serializers.HyperlinkedModelSerializer):
             view_name='order',
             lookup_field='id'
         )
-        fields = ('id', 'url', 'customer', 'payment_type', 'created_at')
-        depth = 1
+        fields = ('id', 'payment_type_id', 'customer_id', 'created_at', )
+        depth = 2
 
 
 class Orders(ViewSet):
@@ -50,8 +35,8 @@ class Orders(ViewSet):
             Response -- JSON serialized order instance
         """
         new_order = Order()
-        new_order.customer = Customer.objects.get(user=request.auth.user)
-        new_order.payment_type = PaymentType.objects.get(pk=request.data["payment_type"])
+        new_order.customer = Customer.objects.get(pk=request.data["customer_id"])
+        new_order.payment_type = PaymentType.objects.get(pk=request.data["payment_type_id"])
         new_order.created_at = request.data["created_at"]
 
         new_order.save()
@@ -81,6 +66,7 @@ class Orders(ViewSet):
         """
         order = Order.objects.get(pk=pk)
         order.created_at = request.data["created_at"]
+        order.payment_type_id = PaymentType.objects.get(pk=request.data["payment_type_id"])
         order.save()
 
         return Response({}, status=status.HTTP_204_NO_CONTENT)
@@ -109,9 +95,9 @@ class Orders(ViewSet):
         Returns:
             Response -- JSON serialized list of orders
         """
-        customer = Customer.objects.get(user=request.auth.user)
-        orders = Order.objects.filter(customer=customer)
-        # orders = Order.objects.all()
+        # customer = Customer.objects.get(user=request.auth.user)
+        # orders = Order.objects.filter(customer=customer)
+        orders = Order.objects.all()
 
 
         serializer = OrderSerializer(
