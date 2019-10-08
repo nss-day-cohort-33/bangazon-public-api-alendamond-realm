@@ -10,7 +10,7 @@ router.register(r'orders', Orders, 'order')
 router.register(r'products', ProductData, 'product')
 router.register(r'producttypes', ProductTypes, 'producttype')
 router.register(r'customers', Customers, 'customer')
-router.register(r'orderproduct', OrdersProducts, 'orderproduct')
+router.register(r'ordersproducts', OrdersProducts, 'ordersproducts')
 
 urlpatterns = [
     url(r'^', include(router.urls)),
