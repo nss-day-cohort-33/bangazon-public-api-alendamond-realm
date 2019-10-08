@@ -14,7 +14,7 @@ class OrderSerializer(serializers.HyperlinkedModelSerializer):
     Arguments:
         serializers
     """
-    customers = serializers.HyperlinkedRelatedField(
+    customer = serializers.HyperlinkedRelatedField(
         queryset=Customer.objects.all(),
         view_name="customer-detail",
         many=True,
@@ -22,7 +22,7 @@ class OrderSerializer(serializers.HyperlinkedModelSerializer):
         lookup_field="pk"
     )
 
-    payment_types = serializers.HyperlinkedRelatedField(
+    payment_type = serializers.HyperlinkedRelatedField(
         queryset=PaymentType.objects.all(),
         view_name="payment_type-detail",
         many=True,
@@ -36,7 +36,7 @@ class OrderSerializer(serializers.HyperlinkedModelSerializer):
             view_name='order',
             lookup_field='id'
         )
-        fields = ('id', 'url', 'customers', 'payment_types', 'created_at', )
+        fields = ('id', 'url', 'customer', 'payment_type', 'created_at')
         depth = 1
 
 
@@ -51,7 +51,7 @@ class Orders(ViewSet):
         """
         new_order = Order()
         new_order.customer = Customer.objects.get(user=request.auth.user)
-        new_order.payment_type = PaymentType.objects.get(pk=request.data["payment_type_id"])
+        new_order.payment_type = PaymentType.objects.get(pk=request.data["payment_type"])
         new_order.created_at = request.data["created_at"]
 
         new_order.save()

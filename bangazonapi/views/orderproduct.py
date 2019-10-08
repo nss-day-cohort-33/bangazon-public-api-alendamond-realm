@@ -4,22 +4,22 @@ from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import serializers
 from rest_framework import status
-from bangazonapi.models import ProductType
+from bangazonapi.models import OrderProduct
 
 
-class ProductTypeSerializer(serializers.HyperlinkedModelSerializer):
-    """JSON serializer for product types
+class OrderProductSerializer(serializers.HyperlinkedModelSerializer):
+    """JSON serializer for order/product join table
 
     Arguments:
         serializers
     """
     class Meta:
-        model = ProductType
+        model = OrderProduct
         url = serializers.HyperlinkedIdentityField(
-            view_name='producttype',
+            view_name='orderproduct',
             lookup_field='id'
         )
-        fields = ('id', 'url', 'name')
+        fields = ('id', 'url', 'order', 'product')
 
 
 class ProductTypes(ViewSet):
@@ -94,6 +94,5 @@ class ProductTypes(ViewSet):
         serializer = ProductTypeSerializer(
             types, many=True, context={'request': request})
         return Response(serializer.data)
-
 
 
