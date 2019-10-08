@@ -96,10 +96,10 @@ class ProductData(ViewSet):
         products = Product.objects.all()
 
         # Support filtering attractions by area id
-        category = self.request.query_params.get('category', None)
+        product_type = self.request.query_params.get('product_type', None)
         quantity = self.request.query_params.get('quantity', None)
-        if category is not None:
-            products = products.filter(product_type_id=category)
+        if product_type is not None:
+            products = products.filter(product_type = product_type )
 
         if quantity is not None:
             quantity = int(quantity)
