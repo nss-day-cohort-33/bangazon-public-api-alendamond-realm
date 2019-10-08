@@ -99,7 +99,7 @@ class ProductData(ViewSet):
         category = self.request.query_params.get('category', None)
         quantity = self.request.query_params.get('quantity', None)
         if category is not None:
-            products = products.filter(product_category__id=category)
+            products = products.filter(product_type_id=category)
 
         if quantity is not None:
             quantity = int(quantity)
