@@ -5,5 +5,5 @@ from .order import Orders
 from .paymenttype import PaymentTypes
 from .product import ProductData
 from .producttype import ProductTypes
-from .orderproduct import OrderProduct
+from .orderproduct import OrdersProducts
 
