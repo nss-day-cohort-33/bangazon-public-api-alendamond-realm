@@ -20,7 +20,7 @@ class ProductTypeSerializer(serializers.HyperlinkedModelSerializer):
             lookup_field='id'
         )
         fields = ('id', 'url', 'name')
-        depth = 2
+        depth = 1
 
 
 class ProductTypes(ViewSet):
