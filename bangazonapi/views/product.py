@@ -19,8 +19,8 @@ class ProductSerializer(serializers.HyperlinkedModelSerializer):
         )
 
         fields = ('id', 'name', 'price', 'description', 'quantity',
-        'city', 'created_at', 'image', 'product_type_id', 'customer_id', 'product_type')
-        depth = 2
+        'city', 'created_at', 'image', 'product_type_id', 'customer_id')
+        depth = 1
 
 
 class ProductData(ViewSet):
@@ -92,30 +92,11 @@ class ProductData(ViewSet):
             return Response({'message': ex.args[0]}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def list(self, request):
-
-        products = Product.objects.all()
-
-        # Support filtering attractions by area id
-        product_type = self.request.query_params.get('product_type', None)
-        quantity = self.request.query_params.get('quantity', None)
-        if product_type is not None:
-            products = products.filter(product_type = product_type )
-
-        if quantity is not None:
-            quantity = int(quantity)
-            length = len(products)
-            new_products = list()
-            count = 0
-            for product in products:
-                count += 1
-                if count - 1 + quantity >= length:
-                    new_products.append(product)
-                    if count == length:
-                        products = new_products
-                        break
-
-
-
+        """Handle GET requests to park areas resource
+        Returns:
+            Response -- JSON serialized list of park areas
+        """
+        product = Product.objects.all()  # This is my query to the database
         serializer = ProductSerializer(
-            products, many=True, context={'request': request})
+            product, many=True, context={'request': request})
         return Response(serializer.data)
