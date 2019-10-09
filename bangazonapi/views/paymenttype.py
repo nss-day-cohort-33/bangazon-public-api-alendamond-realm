@@ -43,10 +43,10 @@ class PaymentTypes(ViewSet):
         new_payment_type.expiration_date = request.data["expiration_date"]
         customer = Customer.objects.get(
             user=request.auth.user)
-
-        # customer = Customer.objects.get(pk=request.data["customer"])
         new_payment_type.customer = customer
         new_payment_type.save()
+        # customer = Customer.objects.get(pk=request.data["customer"])
+        # new_payment_type.customer_id = request.data["customer_id"]
 
         serializer = PaymentTypeSerializer(
             new_payment_type, context={'request': request})
@@ -110,13 +110,12 @@ class PaymentTypes(ViewSet):
         Returns:
             Response -- JSON serialized list of payment types
         """
-        payment_types = PaymentType.objects.all()
+        # Available if we need it:
+        # payment_types = PaymentType.objects.all()
 
-        # Support filtering payment types by customer
-        this_customer = self.request.query_params.get('customer', None)
-        if this_customer is not None:
-            payment_types = payment_types.filter(customer=this_customer)
-
+        customer = Customer.objects.get(user=request.auth.user)
+        payment_types = PaymentType.objects.filter(customer=customer)
         serializer = PaymentTypeSerializer(
             payment_types, many=True, context={'request': request})
+
         return Response(serializer.data)
