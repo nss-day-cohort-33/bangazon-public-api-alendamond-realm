@@ -21,7 +21,7 @@ class CustomerSerializer(serializers.HyperlinkedModelSerializer):
             view_name='customer',
             lookup_field='id'
         )
-        fields = ('id', 'phone_number', 'address', 'user_id')
+        fields = ('id', 'url', 'user', 'phone_number', 'address', 'user_id')
         depth = 1
 
 class Customers(ViewSet):
@@ -35,7 +35,9 @@ class Customers(ViewSet):
         new_customer = Customer()
         new_customer.address = request.data["address"]
         new_customer.phone_number = request.data["phone_number"]
-        new_customer.user_id = request.data["user_id"]
+
+        user = Customer.objects.get(user=request.auth.user)
+        new_customer.user = user
         new_customer.save()
 
         serializer = CustomerSerializer(new_customer, context={'request': request})
@@ -95,9 +97,11 @@ class Customers(ViewSet):
     def list(self, request):
         customers = Customer.objects.all()
 
-        user_id = self.request.query_params.get('customer', None)
-        if user_id is not None:
-            customers = customers.filter(user_id=user_id)
+        # user_id = self.request.query_params.get('customer', None)
+        # if user_id is not None:
+        #     customers = customers.filter(user_id=user_id)
+
+
 
         serializer = CustomerSerializer(
             customers, many=True, context={'request': request})
