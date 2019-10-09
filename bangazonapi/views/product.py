@@ -5,12 +5,13 @@ from rest_framework import serializers
 from rest_framework import status
 from bangazonapi.models import *
 
+
 class ProductSerializer(serializers.HyperlinkedModelSerializer):
     """JSON serializer for products
         Arguments:
         serializers.HyperlinkedModelSerializer
     """
-
+    # This meta defines the field and the model that is being used
     class Meta:
         model = Product
         url = serializers.HyperlinkedIdentityField(
