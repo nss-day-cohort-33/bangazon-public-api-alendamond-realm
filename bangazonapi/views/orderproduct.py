@@ -6,6 +6,10 @@ from rest_framework import serializers
 from rest_framework import status
 from bangazonapi.models import Order, Product, OrderProduct
 
+# Author: Amber Gooch
+# Purpose: Allow a user to communicate with the Bangazon database to GET POST and DELETE order/product entries.
+# Methods: GET POST DELETE
+
 
 class OrderProductSerializer(serializers.HyperlinkedModelSerializer):
     """JSON serializer for order/product join table
