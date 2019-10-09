@@ -10,6 +10,7 @@ from bangazonapi.models import *
 
 class OrderSerializer(serializers.HyperlinkedModelSerializer):
     """JSON serializer for orders
+    Author: Curt Cato
 
     Arguments:
         serializers
@@ -22,7 +23,7 @@ class OrderSerializer(serializers.HyperlinkedModelSerializer):
             lookup_field='id'
         )
         fields = ('id', 'payment_type', 'customer_id', 'created_at')
-        depth = 2
+        depth = 3
 
 
 class Orders(ViewSet):
@@ -30,6 +31,10 @@ class Orders(ViewSet):
 
     def create(self, request):
         """Handle POST operations
+
+        Author: Curt Cato
+        Purpose: Allow the user to create an order via communicating with the Bangazon DB
+        Method: POST
 
         Returns:
             Response -- JSON serialized order instance
@@ -48,6 +53,10 @@ class Orders(ViewSet):
     def retrieve(self, request, pk=None):
         """Handle GET requests for single order
 
+        Author: Curt Cato
+        Purpose: Allow a user to communicate with the Bangazon database to retrieve one order
+        Method:  GET
+
         Returns:
             Response -- JSON serialized order instance
         """
@@ -61,6 +70,10 @@ class Orders(ViewSet):
     def update(self, request, pk=None):
         """Handle PUT requests for a park area itinerary
 
+        Author: Curt Cato
+        Purpose: Allow a user to update an order via the Bangazon DB
+        Method: PUT
+
         Returns:
             Response -- Empty body with 204 status code
         """
@@ -73,6 +86,10 @@ class Orders(ViewSet):
 
     def destroy(self, request, pk=None):
         """Handle DELETE requests for a order are
+
+        Author: Curt Cato
+        Purpose: Allow a user to delete an order from the DB
+        Method: DELETE
 
         Returns:
             Response -- 200, 404, or 500 status code
@@ -91,6 +108,9 @@ class Orders(ViewSet):
 
     def list(self, request):
         """Handle GET requests to orders resource
+
+        Author: Curt Cato
+        Purpose: Allow a user to list all of the order from the Bangazon DB
 
         Returns:
             Response -- JSON serialized list of orders

@@ -8,6 +8,7 @@ from bangazonapi.models import *
 
 class ProductSerializer(serializers.HyperlinkedModelSerializer):
     """JSON serializer for products
+
         Arguments:
         serializers.HyperlinkedModelSerializer
     """
