@@ -7,6 +7,12 @@ from .paymenttype import PaymentType
 
 class Order(models.Model):
 
+    """
+    Creates table for orders
+    Author: Curt Cato
+    methods: none
+    """
+
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     payment_type = models.ForeignKey(PaymentType, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
