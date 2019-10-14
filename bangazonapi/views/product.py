@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from rest_framework import serializers
 from rest_framework import status
 from bangazonapi.models import *
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
 
 class ProductSerializer(serializers.HyperlinkedModelSerializer):
@@ -30,6 +31,7 @@ class ProductData(ViewSet):
         Returns:
             Response -- JSON serialized product instance
         """
+    permission_classes = (IsAuthenticatedOrReadOnly,)
     def create(self, request):
         new_product = Product()
         new_product.customer = Customer.objects.get(user=request.auth.user)
@@ -99,6 +101,23 @@ class ProductData(ViewSet):
             Response -- JSON serialized list of park areas
         """
         product = Product.objects.all()  # This is my query to the database
+
+        quantity = self.request.query_params.get('quantity', None)
+
+        if quantity is not None:
+            quantity = int(quantity)
+            length = len(products)
+            count = 0
+            for product in products:
+                count += 1
+                if count - 1 + quantity >= length:
+                    if product.quantity > 0:
+                        product_list.append(product)
+                    if count == length:
+                        products = product_list
+                        break
+
+
         serializer = ProductSerializer(
             product, many=True, context={'request': request})
         return Response(serializer.data)
