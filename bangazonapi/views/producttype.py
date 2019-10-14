@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework import serializers
 from rest_framework import status
 from bangazonapi.models import ProductType
-
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
 class ProductTypeSerializer(serializers.HyperlinkedModelSerializer):
     """JSON serializer for product types
@@ -26,12 +26,15 @@ class ProductTypeSerializer(serializers.HyperlinkedModelSerializer):
 class ProductTypes(ViewSet):
     """Product types for Bangazon"""
 
+    permission_classes = (IsAuthenticatedOrReadOnly,)
     def create(self, request):
+
         """Handle POST operations
 
         Returns:
             Response -- JSON serialized ProductType instance
         """
+
         new_product_type = ProductType()
         new_product_type.name = request.data["name"]
 
