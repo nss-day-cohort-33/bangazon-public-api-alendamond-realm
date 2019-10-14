@@ -100,11 +100,13 @@ class ProductData(ViewSet):
         Returns:
             Response -- JSON serialized list of park areas
         """
-        product = Product.objects.all()  # This is my query to the database
+        products = Product.objects.all()  # This is my query to the database
+
 
         quantity = self.request.query_params.get('quantity', None)
 
         if quantity is not None:
+            product_list = list()
             quantity = int(quantity)
             length = len(products)
             count = 0
@@ -119,5 +121,5 @@ class ProductData(ViewSet):
 
 
         serializer = ProductSerializer(
-            product, many=True, context={'request': request})
+            products, many=True, context={'request': request})
         return Response(serializer.data)
