@@ -1,14 +1,18 @@
 from django.db import models
 from .customer import Customer
 from .producttype import ProductType
+from safedelete.models import SOFT_DELETE
+from safedelete.models import SafeDeleteModel
 
 
-class Product(models.Model):
+class Product(SafeDeleteModel):
     """
     Creates table for product
     Author: Matthew McDevitt
     methods: none
     """
+
+    _safedelete_policy = SOFT_DELETE
     name = models.CharField(max_length=50)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     description = models.CharField(max_length=255)

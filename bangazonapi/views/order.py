@@ -22,8 +22,8 @@ class OrderSerializer(serializers.HyperlinkedModelSerializer):
             view_name='order',
             lookup_field='id'
         )
-        fields = ('id', 'payment_type', 'customer_id', 'created_at')
-        depth = 3
+        fields = ('id', 'url', 'payment_type', 'customer_id', 'customer', 'created_at', 'line_items')
+        depth = 2
 
 
 class Orders(ViewSet):
@@ -39,14 +39,31 @@ class Orders(ViewSet):
         Returns:
             Response -- JSON serialized order instance
         """
-        new_order = Order()
-        new_order.customer = Customer.objects.get(user=request.auth.user)
-        new_order.payment_type = PaymentType.objects.get(pk=request.data["payment_type_id"])
-        new_order.created_at = request.data["created_at"]
 
-        new_order.save()
+        # Changing the orders resource by adding a product to an order means we have to make a new instance of OrderProduct. Let's do that first and add the product to it that was sent in the POST request:
+        order_item = OrderProduct()
+        order_item.product = Product.objects.get(pk=request.data["product_id"])
 
-        serializer = OrderSerializer(new_order, context={'request': request})
+        # Now, we need to know whether order_item's order will be an existing order _or_ a new order we'll have to create:
+        current_customer = Customer.objects.get(pk=request.user.id)
+        order = Order.objects.filter(customer=current_customer, payment_type=None)
+
+        # order is now either an existing, open order, or an empty queryset. How do we check? A new friend called exists()!
+        if order.exists():
+            print("Open order in db. Add it and the prod to OrderProduct")
+            order_item.order = order[0]
+        else:
+            print("No open orders. Time to make a new order to add this product to")
+            new_order = Order()
+            new_order.customer = current_customer
+            new_order.save()
+            order_item.order = new_order
+
+        # order_item has a product and an order. It's ready to save now
+        order_item.save()
+
+        # Convert the order to json and send it back to the client
+        serializer = OrderSerializer(order_item, context={'request': request})
 
         return Response(serializer.data)
 
@@ -78,7 +95,6 @@ class Orders(ViewSet):
             Response -- Empty body with 204 status code
         """
         order = Order.objects.get(pk=pk)
-        order.created_at = request.data["created_at"]
         order.payment_type_id = PaymentType.objects.get(pk=request.data["payment_type_id"])
         order.save()
 
@@ -115,11 +131,21 @@ class Orders(ViewSet):
         Returns:
             Response -- JSON serialized list of orders
         """
-        customer = Customer.objects.get(user=request.auth.user)
-        orders = Order.objects.filter(customer=customer)
-        # orders = Order.objects.all()
+        orders = Order.objects.all()
+        customer = Customer.objects.get(pk=request.user.id)
 
-
-        serializer = OrderSerializer(
-            orders, many=True, context={'request': request})
+        # Either send back all closed orders for the order history view, or the single open order to display in cart view
+        cart = self.request.query_params.get('orderlist', None)
+        orders = orders.filter(customer_id=customer)
+        print("orders", orders)
+        if cart is not None:
+            orders = orders.filter(payment_type=None).get()
+            print("orders filtered", orders)
+            serializer = OrderSerializer(
+                orders, many=False, context={'request': request}
+              )
+        else:
+            serializer = OrderSerializer(
+                orders, many=True, context={'request': request}
+              )
         return Response(serializer.data)
