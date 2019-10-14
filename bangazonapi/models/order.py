@@ -14,12 +14,10 @@ class Order(models.Model):
     """
 
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
-    payment_type = models.ForeignKey(PaymentType, on_delete=models.CASCADE)
+    payment_type = models.ForeignKey(PaymentType, null=True, blank=True, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
+    line_items = models.ManyToManyField("Product", through="OrderProduct")
 
     class Meta:
         verbose_name = ("order")
         verbose_name_plural = ("orders")
-
-    def __str__(self):
-        return f'{self.customer.user.first_name} uses {self.payment_type.merchant_name}'
