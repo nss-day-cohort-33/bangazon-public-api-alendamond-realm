@@ -24,14 +24,13 @@ class Product(SafeDeleteModel):
     product_type = models.ForeignKey(ProductType, on_delete=models.CASCADE)
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
 
-    @property
-    def total_sold(self):
-        return self.orderproduct_set.filter(order__payment_type__isnull=False).count()
-
     class Meta:
         verbose_name = ("product")
         verbose_name_plural = ("products")
 
+    @property
+    def total_sold(self):
+        return self.orderproduct_set.filter(order__payment_type__isnull=False).count()
 
     def __str__(self):
         return self.name

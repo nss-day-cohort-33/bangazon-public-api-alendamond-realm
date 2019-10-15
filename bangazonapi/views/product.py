@@ -111,14 +111,8 @@ class ProductData(ViewSet):
         elif city is not None:
             products = Product.objects.filter(city=city)
 
-        # if customer_products is not None:
             customer = Customer.objects.get(user=request.auth.user)
             products = Product.objects.filter(customer=customer)
-
-            for product in products:
-                sold_list = list()
-                sold_products = Order.objects.filter(payment_type_id__isnotnull=True)
-                order_products = OrderProduct.filter(product=product)
 
         if quantity is not None:
             product_list = list()
