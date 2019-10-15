@@ -102,16 +102,17 @@ class ProductData(ViewSet):
         """
         products = Product.objects.all()  # This is my query to the database
 
-
-
         quantity = self.request.query_params.get('quantity', None)
         customer_products = self.request.query_params.get('customer', None)
-
 
         if customer_products is not None:
             customer = Customer.objects.get(user=request.auth.user)
             products = Product.objects.filter(customer=customer)
-            # sold = Order.objects.filter(payment_type_id = int)
+
+            for product in products:
+                order_product = OrderProduct.filter(product=product)
+                sold = Order.objects.filter(payment_type_id__isnotnull=True)
+                if sold
 
 
         if quantity is not None:
