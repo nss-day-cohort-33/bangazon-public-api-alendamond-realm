@@ -112,6 +112,11 @@ class Orders(ViewSet):
         """
         try:
             order = Order.objects.get(pk=pk)
+            orderproducts = OrderProduct.objects.all()
+            orderproducts = orderproducts.filter(order=order)
+            for item in orderproducts:
+                print(item)
+                item.delete()
             order.delete()
 
             return Response({}, status=status.HTTP_204_NO_CONTENT)
