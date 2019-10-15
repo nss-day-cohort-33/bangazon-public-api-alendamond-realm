@@ -107,9 +107,18 @@ class ProductData(ViewSet):
         quantity = self.request.query_params.get('quantity', None)
         customer_products = self.request.query_params.get('customer', None)
 
+
         if customer_products is not None:
             customer = Customer.objects.get(user=request.auth.user)
             products = Product.objects.filter(customer=customer)
+            # sold = Order.objects.filter(payment_type_id = 'payment_type_id')
+            # if quantity is not None:
+            #     product_list = list()
+            #     quantity = int(quantity)
+            #     count = 0
+            #     for product in products:
+            #         if product == sold:
+            #             count -= 1
 
         if quantity is not None:
             product_list = list()
