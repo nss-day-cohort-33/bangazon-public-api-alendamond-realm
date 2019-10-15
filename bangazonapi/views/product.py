@@ -106,10 +106,10 @@ class ProductData(ViewSet):
         customer_products = self.request.query_params.get('customer', None)
         quantity = self.request.query_params.get('quantity', None)
 
-        if city is not None:
-            products = Product.objects.filter(city=city)
-        elif city == "":
+        if city == "":
             products = Product.objects.all()
+        elif city is not None:
+            products = Product.objects.filter(city=city)
 
         if customer_products is not None:
             customer = Customer.objects.get(user=request.auth.user)
