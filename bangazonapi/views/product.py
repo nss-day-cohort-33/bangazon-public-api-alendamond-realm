@@ -22,7 +22,7 @@ class ProductSerializer(serializers.HyperlinkedModelSerializer):
         )
 
         fields = ('id', 'name', 'price', 'description', 'quantity',
-        'city', 'created_at', 'image', 'product_type_id', 'customer_id')
+        'city', 'created_at', 'image', 'product_type_id', 'customer_id', 'total_sold')
         depth = 1
 
 
@@ -102,20 +102,23 @@ class ProductData(ViewSet):
         """
         products = Product.objects.all()  # This is my query to the database
 
+        city = self.request.query_params.get('city', None)
+        # customer_products = self.request.query_params.get('customer', None)
         quantity = self.request.query_params.get('quantity', None)
-        customer_products = self.request.query_params.get('customer', None)
-        myquantity = self.request.query_params.get('sold', None)
 
-        if customer_products is not None:
+        if city == "":
+            products = Product.objects.all()
+        elif city is not None:
+            products = Product.objects.filter(city=city)
+
+        # if customer_products is not None:
             customer = Customer.objects.get(user=request.auth.user)
             products = Product.objects.filter(customer=customer)
 
             for product in products:
-                order_product = OrderProduct.filter(product=product)
-                sold = Order.objects.filter(payment_type_id__isnotnull=True)
-
-                if sold is not None:
-
+                sold_list = list()
+                sold_products = Order.objects.filter(payment_type_id__isnotnull=True)
+                order_products = OrderProduct.filter(product=product)
 
         if quantity is not None:
             product_list = list()
