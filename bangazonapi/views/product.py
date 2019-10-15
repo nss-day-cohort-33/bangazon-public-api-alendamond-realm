@@ -104,6 +104,7 @@ class ProductData(ViewSet):
 
         quantity = self.request.query_params.get('quantity', None)
         customer_products = self.request.query_params.get('customer', None)
+        myquantity = self.request.query_params.get('sold', None)
 
         if customer_products is not None:
             customer = Customer.objects.get(user=request.auth.user)
@@ -112,7 +113,8 @@ class ProductData(ViewSet):
             for product in products:
                 order_product = OrderProduct.filter(product=product)
                 sold = Order.objects.filter(payment_type_id__isnotnull=True)
-                if sold
+
+                if sold is not None:
 
 
         if quantity is not None:
