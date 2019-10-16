@@ -6,7 +6,7 @@ from rest_framework import status
 from bangazonapi.models import Order, Product, OrderProduct, Customer
 
 # Author: Curt Cato
-# Purpose: Allow a user to communicate with the Bangazon database to GET POST and DELETE order/product entries.
+# Purpose: Allow a user to communicate with the Bangazon database to GET POST and DELETE customer/product entries.
 # Methods: GET POST DELETE
 
 
