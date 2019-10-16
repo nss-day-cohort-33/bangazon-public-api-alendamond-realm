@@ -5,4 +5,6 @@ from .productrating import ProductRating
 from .product import Product
 from .orderproduct import OrderProduct
 from .producttype import ProductType
-
+from .likedislike import LikeDislike
+from .friend import Friend
+from .favorite import Favorite
