@@ -6,6 +6,7 @@ from rest_framework.response import Response
 from rest_framework import serializers
 from rest_framework import status
 from bangazonapi.models import *
+from bangazonapi.views.product import ProductSerializer
 
 
 class OrderSerializer(serializers.HyperlinkedModelSerializer):
@@ -15,7 +16,7 @@ class OrderSerializer(serializers.HyperlinkedModelSerializer):
     Arguments:
         serializers
     """
-
+    line_items = ProductSerializer(many=True)
     class Meta:
         model = Order
         url = serializers.HyperlinkedIdentityField(
@@ -23,7 +24,7 @@ class OrderSerializer(serializers.HyperlinkedModelSerializer):
             lookup_field='id'
         )
         fields = ('id', 'url', 'payment_type', 'customer_id', 'customer', 'created_at', 'line_items')
-        depth = 2
+        depth = 3
 
 
 class Orders(ViewSet):
@@ -95,8 +96,16 @@ class Orders(ViewSet):
             Response -- Empty body with 204 status code
         """
         order = Order.objects.get(pk=pk)
-        order.payment_type_id = PaymentType.objects.get(pk=request.data["payment_type_id"])
-        order.save()
+        if request.data["payment_type_id"]:
+            print("wrong one")
+            order.payment_type_id = PaymentType.objects.get(pk=request.data["payment_type_id"])
+            order.save()
+        else:
+            print("help me")
+            orderproduct = OrderProduct.objects.filter(order=order, product=request.data["item_id"])[0]
+            orderproduct.delete()
+
+
 
         return Response({}, status=status.HTTP_204_NO_CONTENT)
 

@@ -22,7 +22,7 @@ class ProductSerializer(serializers.HyperlinkedModelSerializer):
         )
 
         fields = ('id', 'name', 'price', 'description', 'quantity',
-        'city', 'created_at', 'image', 'product_type_id', 'customer_id')
+        'city', 'created_at', 'image', 'product_type_id', 'customer_id', 'total_sold')
         depth = 1
 
 
@@ -103,7 +103,7 @@ class ProductData(ViewSet):
         products = Product.objects.all()  # This is my query to the database
 
         city = self.request.query_params.get('city', None)
-        customer_products = self.request.query_params.get('customer', None)
+        # customer_products = self.request.query_params.get('customer', None)
         quantity = self.request.query_params.get('quantity', None)
 
         if city == "":
@@ -111,7 +111,6 @@ class ProductData(ViewSet):
         elif city is not None:
             products = Product.objects.filter(city=city)
 
-        if customer_products is not None:
             customer = Customer.objects.get(user=request.auth.user)
             products = Product.objects.filter(customer=customer)
 
