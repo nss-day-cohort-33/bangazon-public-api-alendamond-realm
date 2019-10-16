@@ -1,3 +1,4 @@
+from django.core.validators import MaxValueValidator, MinValueValidator
 from safedelete.models import SOFT_DELETE
 from safedelete.models import SafeDeleteModel
 from django.db import models
@@ -15,7 +16,7 @@ class Product(SafeDeleteModel):
 
     _safedelete_policy = SOFT_DELETE
     name = models.CharField(max_length=50)
-    price = models.DecimalField(max_digits=10, decimal_places=2)
+    price = models.FloatField(validators=[MinValueValidator(0.00), MaxValueValidator(10000.00)],)
     description = models.CharField(max_length=255)
     quantity = models.IntegerField()
     city = models.CharField(max_length=50)
