@@ -1,8 +1,9 @@
+from safedelete.models import SOFT_DELETE
+from safedelete.models import SafeDeleteModel
 from django.db import models
 from .customer import Customer
 from .producttype import ProductType
-from safedelete.models import SOFT_DELETE
-from safedelete.models import SafeDeleteModel
+
 
 
 class Product(SafeDeleteModel):
@@ -27,6 +28,9 @@ class Product(SafeDeleteModel):
         verbose_name = ("product")
         verbose_name_plural = ("products")
 
+    @property
+    def total_sold(self):
+        return self.orderproduct_set.filter(order__payment_type__isnull=False).count()
 
     def __str__(self):
         return self.name

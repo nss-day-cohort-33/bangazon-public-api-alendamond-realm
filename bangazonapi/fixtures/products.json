@@ -1,7 +1,7 @@
 [
     {
       "model": "bangazonapi.product",
-      "pk": 1,
+      "pk": 8,
       "fields": {
         "name": "headphones 99",
         "price": 300.89,
@@ -16,7 +16,7 @@
     },
     {
       "model": "bangazonapi.product",
-      "pk": 2,
+      "pk": 9,
       "fields": {
         "name": "Socks",
         "price": 5.00,
@@ -31,7 +31,7 @@
     },
     {
       "model": "bangazonapi.product",
-      "pk": 3,
+      "pk": 10,
       "fields": {
         "name": "Couch",
         "price": 3000,
@@ -46,7 +46,7 @@
     },
     {
       "model": "bangazonapi.product",
-      "pk": 4,
+      "pk": 11,
       "fields": {
         "name": "Blender",
         "price": 100,
@@ -57,25 +57,11 @@
         "image": null,
         "product_type": 4,
         "customer": 4
-      },
-      {
-      "model": "bangazonapi.product",
-      "pk": 2,
-      "fields": {
-        "name": "Socks",
-        "price": 5.00,
-        "description": "All of the socks.",
-        "quantity": 10000,
-        "city": "Atlanta",
-        "created_at": null,
-        "image": null,
-        "product_type": 2,
-        "customer": 2
       }
     },
     {
       "model": "bangazonapi.product",
-      "pk": 3,
+      "pk": 13,
       "fields": {
         "name": "Couch",
         "price": 3000,
@@ -86,21 +72,7 @@
         "image": null,
         "product_type": 3,
         "customer": 3
-      }
-    },
-    {
-      "model": "bangazonapi.product",
-      "pk": 4,
-      "fields": {
-        "name": "Blender",
-        "price": 100,
-        "description": "Blending some fruit.",
-        "quantity": 100,
-        "city": "Brentwood",
-        "created_at": null,
-        "image": null,
-        "product_type": 4,
-        "customer": 4
       }
     }
+
   ]

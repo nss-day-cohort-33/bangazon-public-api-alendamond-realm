@@ -57,7 +57,12 @@ class Customers(ViewSet):
         update_customer.address = request.data["address"]
         update_customer.phone_number = request.data["phone_number"]
 
+        user.last_name = request.data["last_name"]
+
+        user.save()
+
         update_customer.user = user
+
         update_customer.save()
 
         return Response({}, status=status.HTTP_204_NO_CONTENT)
