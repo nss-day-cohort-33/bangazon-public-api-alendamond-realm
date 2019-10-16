@@ -10,6 +10,6 @@ class Favorite(models.Model):
     methods: none
     """
 
-    buyer = models.ForeignKey(Customer, on_delete=models.CASCADE)
-    seller = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    buyer = models.ForeignKey(Customer, on_delete=models.CASCADE, related_name="buyer" )
+    seller = models.ForeignKey(Customer, on_delete=models.CASCADE, related_name="seller")
 

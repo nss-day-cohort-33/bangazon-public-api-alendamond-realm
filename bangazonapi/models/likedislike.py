@@ -10,7 +10,7 @@ class LikeDislike(models.Model):
     methods: none
     """
 
-    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE, related_name="customer")
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="product")
     like_dislike = models.BinaryField()
 
