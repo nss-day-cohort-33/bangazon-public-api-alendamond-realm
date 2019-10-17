@@ -7,6 +7,7 @@ from rest_framework import serializers
 from rest_framework import status
 from bangazonapi.models import *
 from bangazonapi.views.product import ProductSerializer
+from bangazonapi.views.orderproduct import OrderProductSerializer
 
 
 class OrderSerializer(serializers.HyperlinkedModelSerializer):
@@ -24,7 +25,7 @@ class OrderSerializer(serializers.HyperlinkedModelSerializer):
             lookup_field='id'
         )
         fields = ('id', 'url', 'payment_type', 'customer_id', 'customer', 'created_at', 'line_items')
-        depth = 3
+        depth = 1
 
 
 class Orders(ViewSet):
@@ -51,10 +52,8 @@ class Orders(ViewSet):
 
         # order is now either an existing, open order, or an empty queryset. How do we check? A new friend called exists()!
         if order.exists():
-            print("Open order in db. Add it and the prod to OrderProduct")
             order_item.order = order[0]
         else:
-            print("No open orders. Time to make a new order to add this product to")
             new_order = Order()
             new_order.customer = current_customer
             new_order.save()
@@ -64,9 +63,9 @@ class Orders(ViewSet):
         order_item.save()
 
         # Convert the order to json and send it back to the client
-        serializer = OrderSerializer(order_item, context={'request': request})
+        # serializer = OrderSerializer(order_item, context={'request': request})
 
-        return Response(serializer.data)
+        return Response({}, status=status.HTTP_204_NO_CONTENT)
 
     def retrieve(self, request, pk=None):
         """Handle GET requests for single order
@@ -98,11 +97,10 @@ class Orders(ViewSet):
         order = Order.objects.get(pk=pk)
         product=request.data["item_id"]
         if request.data["payment_type_id"]:
-            print("wrong one")
             order.payment_type_id = PaymentType.objects.get(pk=request.data["payment_type_id"])
             order.save()
         else:
-            print("help me")
+            product = Product.objects.get(pk=request.data["item_id"])
             orderproduct = OrderProduct.objects.filter(order=order, product=product)[0]
             orderproduct.delete()
 
@@ -125,7 +123,6 @@ class Orders(ViewSet):
             orderproducts = OrderProduct.objects.all()
             orderproducts = orderproducts.filter(order=order)
             for item in orderproducts:
-                print(item)
                 item.delete()
             order.delete()
 
@@ -155,7 +152,6 @@ class Orders(ViewSet):
         print("orders", orders)
         if cart is not None:
             orders = orders.filter(payment_type=None).get()
-            print("orders filtered", orders)
             serializer = OrderSerializer(
                 orders, many=False, context={'request': request}
               )
