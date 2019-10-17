@@ -52,10 +52,8 @@ class Orders(ViewSet):
 
         # order is now either an existing, open order, or an empty queryset. How do we check? A new friend called exists()!
         if order.exists():
-            print("Open order in db. Add it and the prod to OrderProduct")
             order_item.order = order[0]
         else:
-            print("No open orders. Time to make a new order to add this product to")
             new_order = Order()
             new_order.customer = current_customer
             new_order.save()
@@ -125,7 +123,6 @@ class Orders(ViewSet):
             orderproducts = OrderProduct.objects.all()
             orderproducts = orderproducts.filter(order=order)
             for item in orderproducts:
-                print(item)
                 item.delete()
             order.delete()
 
@@ -155,7 +152,6 @@ class Orders(ViewSet):
         print("orders", orders)
         if cart is not None:
             orders = orders.filter(payment_type=None).get()
-            print("orders filtered", orders)
             serializer = OrderSerializer(
                 orders, many=False, context={'request': request}
               )
