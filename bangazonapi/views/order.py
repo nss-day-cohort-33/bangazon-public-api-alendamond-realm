@@ -7,6 +7,7 @@ from rest_framework import serializers
 from rest_framework import status
 from bangazonapi.models import *
 from bangazonapi.views.product import ProductSerializer
+from bangazonapi.views.orderproduct import OrderProductSerializer
 
 
 class OrderSerializer(serializers.HyperlinkedModelSerializer):
@@ -24,7 +25,7 @@ class OrderSerializer(serializers.HyperlinkedModelSerializer):
             lookup_field='id'
         )
         fields = ('id', 'url', 'payment_type', 'customer_id', 'customer', 'created_at', 'line_items')
-        depth = 3
+        depth = 1
 
 
 class Orders(ViewSet):
@@ -46,7 +47,7 @@ class Orders(ViewSet):
         order_item.product = Product.objects.get(pk=request.data["product_id"])
 
         # Now, we need to know whether order_item's order will be an existing order _or_ a new order we'll have to create:
-        current_customer = Customer.objects.get(pk=request.user.id)
+        current_customer = Customer.objects.get(user=request.auth.user)
         order = Order.objects.filter(customer=current_customer, payment_type=None)
 
         # order is now either an existing, open order, or an empty queryset. How do we check? A new friend called exists()!
@@ -64,9 +65,9 @@ class Orders(ViewSet):
         order_item.save()
 
         # Convert the order to json and send it back to the client
-        serializer = OrderSerializer(order_item, context={'request': request})
+        # serializer = OrderSerializer(order_item, context={'request': request})
 
-        return Response(serializer.data)
+        return Response({}, status=status.HTTP_204_NO_CONTENT)
 
     def retrieve(self, request, pk=None):
         """Handle GET requests for single order
@@ -97,12 +98,11 @@ class Orders(ViewSet):
         """
         order = Order.objects.get(pk=pk)
         if request.data["payment_type_id"]:
-            print("wrong one")
             order.payment_type_id = PaymentType.objects.get(pk=request.data["payment_type_id"])
             order.save()
         else:
-            print("help me")
-            orderproduct = OrderProduct.objects.filter(order=order, product=request.data["item_id"])[0]
+            product = Product.objects.get(pk=request.data["item_id"])
+            orderproduct = OrderProduct.objects.filter(order=order, product=product)[0]
             orderproduct.delete()
 
 
@@ -146,7 +146,7 @@ class Orders(ViewSet):
             Response -- JSON serialized list of orders
         """
         orders = Order.objects.all()
-        customer = Customer.objects.get(pk=request.user.id)
+        customer = Customer.objects.get(user=request.auth.user)
 
         # Either send back all closed orders for the order history view, or the single open order to display in cart view
         cart = self.request.query_params.get('orderlist', None)
