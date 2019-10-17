@@ -22,8 +22,8 @@ class ProductSerializer(serializers.HyperlinkedModelSerializer):
         )
 
         fields = ('id', 'name', 'price', 'description', 'quantity',
-        'city', 'created_at', 'image', 'product_type_id', 'customer_id', 'total_sold')
-        depth = 1
+        'city', 'created_at', 'image', 'product_type_id', 'customer_id', 'total_sold', 'product_type')
+        depth = 2
 
 
 class ProductData(ViewSet):
@@ -105,6 +105,18 @@ class ProductData(ViewSet):
         city = self.request.query_params.get('city', None)
 
         quantity = self.request.query_params.get('quantity', None)
+        order = self.request.query_params.get('order_by', None)
+        direction = self.request.query_params.get('direction', None)
+        product_type = self.request.query_params.get('product_type', None)
+
+        if order is not None:
+            filter = order
+
+            if direction is not None:
+                if direction == "desc":
+                    filter = f'-{filter}'
+
+            products = products.order_by(filter)
 
         if city == "":
             products = Product.objects.all()
