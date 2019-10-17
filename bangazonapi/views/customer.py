@@ -98,15 +98,8 @@ class Customers(ViewSet):
         except Exception as ex:
             return HttpResponseServerError(ex)
 
-
     def list(self, request):
         customers = Customer.objects.all()
-
-        # user_id = self.request.query_params.get('customer', None)
-        # if user_id is not None:
-        #     customers = customers.filter(user_id=user_id)
-
-
 
         serializer = CustomerSerializer(
             customers, many=True, context={'request': request})
