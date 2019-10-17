@@ -104,8 +104,6 @@ class Orders(ViewSet):
             orderproduct = OrderProduct.objects.filter(order=order, product=product)[0]
             orderproduct.delete()
 
-
-
         return Response({}, status=status.HTTP_204_NO_CONTENT)
 
     def destroy(self, request, pk=None):
