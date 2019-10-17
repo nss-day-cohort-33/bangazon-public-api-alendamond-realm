@@ -97,6 +97,7 @@ class Orders(ViewSet):
             Response -- Empty body with 204 status code
         """
         order = Order.objects.get(pk=pk)
+        product=request.data["item_id"]
         if request.data["payment_type_id"]:
             order.payment_type_id = PaymentType.objects.get(pk=request.data["payment_type_id"])
             order.save()
@@ -150,7 +151,7 @@ class Orders(ViewSet):
 
         # Either send back all closed orders for the order history view, or the single open order to display in cart view
         cart = self.request.query_params.get('orderlist', None)
-        orders = orders.filter(customer_id=customer)
+        orders = orders.filter(customer=customer)
         print("orders", orders)
         if cart is not None:
             orders = orders.filter(payment_type=None).get()
