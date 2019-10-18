@@ -22,7 +22,7 @@ class ProductTypeSerializer(serializers.HyperlinkedModelSerializer):
             view_name='producttype',
             lookup_field='id'
         )
-        fields = ('id', 'url', 'name', 'products')
+        fields = ('id', 'url', 'name', 'products', 'total_products')
         depth = 2
 
 
@@ -40,7 +40,6 @@ class ProductTypes(ViewSet):
 
         new_product_type = ProductType()
         new_product_type.name = request.data["name"]
-
         new_product_type.save()
 
         serializer = ProductTypeSerializer(new_product_type, context={'request': request})
@@ -102,8 +101,8 @@ class ProductTypes(ViewSet):
 
         if includeproducts is not None:
             for product_type in types:
-                related_products = Product.objects.filter(product_type=product_type)
-                product_type.products = related_products[:3]
+                related_products = Product.objects.filter(product_type=product_type)[:3]
+                product_type.products = related_products
 
         serializer = ProductTypeSerializer(
             types, many=True, context={'request': request})
