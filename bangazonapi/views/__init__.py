@@ -7,3 +7,4 @@ from .product import ProductData
 from .producttype import ProductTypes
 from .orderproduct import OrdersProducts
 from .users import Users
+from .productrating import ProductRatings
