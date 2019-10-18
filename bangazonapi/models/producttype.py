@@ -17,3 +17,14 @@ class ProductType(models.Model):
     def __str__(self):
         return self.name
 
+    # @property
+    # def total_sold(self):
+    #     return self.orderproduct_set.filter(order__payment_type__isnull=False).count()
+
+    @property
+    def total_products(self):
+        types = self.objects.all()
+        for product_type in types:
+            return self.product_set.filter(product_type=product_type).count()
+        # return self.product.filter(product_type=self.product_type).count()
+

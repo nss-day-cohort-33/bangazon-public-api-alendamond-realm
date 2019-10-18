@@ -98,10 +98,12 @@ class ProductTypes(ViewSet):
         """
         types = ProductType.objects.all()
 
-        limit = self.request.query_params.get('limit', None)
+        includeproducts = self.request.query_params.get('includeproducts', None)
 
-        if limit is not None:
-            products = Product.objects.filter(limit=limit)
+        if includeproducts is not None:
+            for product_type in types:
+                related_products = Product.objects.filter(product_type=product_type)
+                product_type.products = related_products[:3]
 
         serializer = ProductTypeSerializer(
             types, many=True, context={'request': request})

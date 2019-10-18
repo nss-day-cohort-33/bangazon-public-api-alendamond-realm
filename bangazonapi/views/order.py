@@ -46,7 +46,7 @@ class Orders(ViewSet):
         order_item.product = Product.objects.get(pk=request.data["product_id"])
 
         # Now, we need to know whether order_item's order will be an existing order _or_ a new order we'll have to create:
-        current_customer = Customer.objects.get(pk=request.user.id)
+        current_customer = Customer.objects.get(user=request.auth.user)
         order = Order.objects.filter(customer=current_customer, payment_type=None)
 
         # order is now either an existing, open order, or an empty queryset. How do we check? A new friend called exists()!
@@ -96,13 +96,14 @@ class Orders(ViewSet):
             Response -- Empty body with 204 status code
         """
         order = Order.objects.get(pk=pk)
+        product=request.data["item_id"]
         if request.data["payment_type_id"]:
             print("wrong one")
             order.payment_type_id = PaymentType.objects.get(pk=request.data["payment_type_id"])
             order.save()
         else:
             print("help me")
-            orderproduct = OrderProduct.objects.filter(order=order, product=request.data["item_id"])[0]
+            orderproduct = OrderProduct.objects.filter(order=order, product=product)[0]
             orderproduct.delete()
 
 
@@ -146,11 +147,11 @@ class Orders(ViewSet):
             Response -- JSON serialized list of orders
         """
         orders = Order.objects.all()
-        customer = Customer.objects.get(pk=request.user.id)
+        customer = Customer.objects.get(user=request.auth.user)
 
         # Either send back all closed orders for the order history view, or the single open order to display in cart view
         cart = self.request.query_params.get('orderlist', None)
-        orders = orders.filter(customer_id=customer)
+        orders = orders.filter(customer=customer)
         print("orders", orders)
         if cart is not None:
             orders = orders.filter(payment_type=None).get()
