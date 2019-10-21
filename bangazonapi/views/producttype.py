@@ -4,8 +4,9 @@ from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import serializers
 from rest_framework import status
-from bangazonapi.models import ProductType
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from bangazonapi.models import ProductType, Product
+from bangazonapi.views.product import ProductSerializer
 
 class ProductTypeSerializer(serializers.HyperlinkedModelSerializer):
     """JSON serializer for product types
@@ -13,14 +14,16 @@ class ProductTypeSerializer(serializers.HyperlinkedModelSerializer):
     Arguments:
         serializers
     """
+    products = ProductSerializer(many=True)
+
     class Meta:
         model = ProductType
         url = serializers.HyperlinkedIdentityField(
             view_name='producttype',
             lookup_field='id'
         )
-        fields = ('id', 'url', 'name')
-        depth = 1
+        fields = ('id', 'url', 'name', 'products', 'total_products')
+        depth = 2
 
 
 class ProductTypes(ViewSet):
@@ -37,7 +40,6 @@ class ProductTypes(ViewSet):
 
         new_product_type = ProductType()
         new_product_type.name = request.data["name"]
-
         new_product_type.save()
 
         serializer = ProductTypeSerializer(new_product_type, context={'request': request})
@@ -94,6 +96,13 @@ class ProductTypes(ViewSet):
             Response -- JSON serialized list of product types
         """
         types = ProductType.objects.all()
+
+        includeproducts = self.request.query_params.get('includeproducts', None)
+
+        if includeproducts is not None:
+            for product_type in types:
+                related_products = Product.objects.filter(product_type=product_type)[:3]
+                product_type.products = related_products
 
         serializer = ProductTypeSerializer(
             types, many=True, context={'request': request})

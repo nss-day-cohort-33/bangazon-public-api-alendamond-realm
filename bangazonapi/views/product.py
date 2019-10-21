@@ -96,7 +96,6 @@ class ProductData(ViewSet):
         products = Product.objects.all()  # This is my query to the database
 
         city = self.request.query_params.get('city', None)
-
         quantity = self.request.query_params.get('quantity', None)
         order = self.request.query_params.get('order_by', None)
         direction = self.request.query_params.get('direction', None)
