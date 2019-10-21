@@ -100,6 +100,7 @@ class Customers(ViewSet):
 
     def list(self, request):
         customers = Customer.objects.all()
+        customers = customers.filter(user=request.auth.user)
 
         serializer = CustomerSerializer(
             customers, many=True, context={'request': request})
