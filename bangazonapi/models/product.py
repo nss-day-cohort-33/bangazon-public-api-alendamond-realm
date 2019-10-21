@@ -15,7 +15,7 @@ class Product(SafeDeleteModel):
     Author: Matthew McDevitt
     methods: none
     """
-
+    __can_be_rated = True
     _safedelete_policy = SOFT_DELETE
     name = models.CharField(max_length=50)
     price = models.FloatField(validators=[MinValueValidator(0.00), MaxValueValidator(10000.00)],)
