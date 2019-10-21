@@ -66,15 +66,8 @@ class ProductData(ViewSet):
             Response -- Empty body with 204 status code
         """
         product = Product.objects.get(pk=pk)
-        product.name = request.data["name"]
-        product.price = request.data["price"]
-        product.description = request.data['description']
         product.quantity = request.data['quantity']
-        product.city = request.data['city']
-        product.created_at = request.data['created_at']
-        product.image = request.data['image']
-        product.product_type = ProductType.objects.get(pk=request.data['product_type_id'])
-        product.customer = Customer.objects.get(user=request.auth.user)
+
         product.save()
 
         return Response({}, status=status.HTTP_204_NO_CONTENT)
@@ -112,7 +105,6 @@ class ProductData(ViewSet):
                 product.can_be_rated = False
 
         city = self.request.query_params.get('city', None)
-
         quantity = self.request.query_params.get('quantity', None)
         order = self.request.query_params.get('order_by', None)
         direction = self.request.query_params.get('direction', None)

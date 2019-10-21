@@ -7,12 +7,10 @@ from .customer import Customer
 from .producttype import ProductType
 from .productrating import ProductRating
 
-
-
 class Product(SafeDeleteModel):
     """
-    Creates table for product
-    Author: Matthew McDevitt
+    Creates table for product and method for calculating current inventory of a user's products.
+    Author: Matthew McDevitt/Scott Silver
     methods: none
     """
     __can_be_rated = True
