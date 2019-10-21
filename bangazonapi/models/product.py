@@ -9,8 +9,8 @@ from .producttype import ProductType
 
 class Product(SafeDeleteModel):
     """
-    Creates table for product
-    Author: Matthew McDevitt
+    Creates table for product and method for calculating current inventory of a user's products.
+    Author: Matthew McDevitt/Scott Silver
     methods: none
     """
 

@@ -17,3 +17,7 @@ class ProductType(models.Model):
     def __str__(self):
         return self.name
 
+    @property
+    def total_products(self):
+        return self.product_set.filter(product_type=self.id).count()
+
