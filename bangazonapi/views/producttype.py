@@ -14,6 +14,22 @@ class ProductTypeSerializer(serializers.HyperlinkedModelSerializer):
     Arguments:
         serializers
     """
+
+    class Meta:
+        model = ProductType
+        url = serializers.HyperlinkedIdentityField(
+            view_name='producttype',
+            lookup_field='id'
+        )
+        fields = ('id', 'url', 'name')
+        depth = 2
+
+class ProductTypeWithProductsSerializer(serializers.HyperlinkedModelSerializer):
+    """JSON serializer for product types
+
+    Arguments:
+        serializers
+    """
     products = ProductSerializer(many=True)
 
     class Meta:
@@ -24,7 +40,6 @@ class ProductTypeSerializer(serializers.HyperlinkedModelSerializer):
         )
         fields = ('id', 'url', 'name', 'products', 'total_products')
         depth = 2
-
 
 class ProductTypes(ViewSet):
     """Product types for Bangazon"""
@@ -104,9 +119,15 @@ class ProductTypes(ViewSet):
                 related_products = Product.objects.filter(product_type=product_type)[:3]
                 product_type.products = related_products
 
+            serializer = ProductTypeWithProductsSerializer(
+                types, many=True, context={'request': request})
+            return Response(serializer.data)
+
         serializer = ProductTypeSerializer(
             types, many=True, context={'request': request})
         return Response(serializer.data)
+
+
 
 
 
