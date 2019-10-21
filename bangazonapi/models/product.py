@@ -2,8 +2,10 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from safedelete.models import SOFT_DELETE
 from safedelete.models import SafeDeleteModel
 from django.db import models
+from django.db.models import Avg
 from .customer import Customer
 from .producttype import ProductType
+from .productrating import ProductRating
 
 class Product(SafeDeleteModel):
     """
@@ -11,7 +13,7 @@ class Product(SafeDeleteModel):
     Author: Matthew McDevitt/Scott Silver
     methods: none
     """
-
+    __can_be_rated = True
     _safedelete_policy = SOFT_DELETE
     name = models.CharField(max_length=50)
     price = models.FloatField(validators=[MinValueValidator(0.00), MaxValueValidator(10000.00)],)
@@ -26,6 +28,29 @@ class Product(SafeDeleteModel):
     class Meta:
         verbose_name = ("product")
         verbose_name_plural = ("products")
+
+    @property
+    def can_be_rated(self):
+        return self.__can_be_rated
+
+    @can_be_rated.setter
+    def can_be_rated(self, value):
+        self.__can_be_rated = value
+
+
+    @property
+    def average_rating(self):
+        ratings = ProductRating.objects.filter(product=self)
+        total_rating = 0
+        for rating in ratings:
+            total_rating += rating.rating
+
+        try:
+            avg = total_rating / len(ratings)
+        except ZeroDivisionError as nonono:
+            avg = 0
+        return avg
+
 
     @property
     def total_sold(self):

@@ -21,9 +21,9 @@ class ProductSerializer(serializers.HyperlinkedModelSerializer):
         lookup_field='id'
         )
 
-        fields = ('id', 'name', 'price', 'description', 'quantity',
-        'city', 'created_at', 'image', 'product_type_id', 'customer_id',
-        'total_sold', 'product_type')
+        fields = ('id', 'name', 'average_rating', 'can_be_rated',
+          'price', 'description', 'quantity',
+        'city', 'created_at', 'image', 'product_type_id', 'product_type', 'customer', 'total_sold')
         depth = 2
 
 
@@ -94,7 +94,15 @@ class ProductData(ViewSet):
         Returns:
             Response -- JSON serialized list of park areas
         """
+        customer = Customer.objects.get(user=request.auth.user)
         products = Product.objects.all()  # This is my query to the database
+
+        for product in products:
+            customer_rated = product.ratings.filter(customer=customer)
+            if len(customer_rated) == 0:
+                product.can_be_rated = True
+            else:
+                product.can_be_rated = False
 
         city = self.request.query_params.get('city', None)
         quantity = self.request.query_params.get('quantity', None)

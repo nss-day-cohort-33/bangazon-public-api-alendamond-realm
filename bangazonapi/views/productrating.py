@@ -3,10 +3,10 @@ from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import serializers
 from rest_framework import status
-from bangazonapi.models import Order, Product, OrderProduct, Customer
+from bangazonapi.models import *
 
 # Author: Curt Cato
-# Purpose: Allow a user to communicate with the Bangazon database to GET POST and DELETE customer/product entries.
+# Purpose: Allow a user to communicate with the Bangazon database to GET POST and DELETE product ratings entries.
 # Methods: GET POST DELETE
 
 
@@ -22,11 +22,11 @@ class ProductRatingSerializer(serializers.HyperlinkedModelSerializer):
             view_name='productrating',
             lookup_field='id'
         )
-        fields = ('id', 'customer_id', 'product_id', 'rating')
+        fields = ('id', 'customer', 'product', 'rating')
         depth = 2
 
 
-class ProductRating(ViewSet):
+class ProductRatings(ViewSet):
     """Orders/Products for Bangazon"""
 
     def create(self, request):
@@ -36,8 +36,8 @@ class ProductRating(ViewSet):
             Response -- JSON serialized OrderProduct instance
         """
         new_productrating = ProductRating()
-        new_productrating.product = Product.objects.get(pk=request.data["product_id"])
-        new_productrating.customer = Customer.objects.get(pk=request.data["customer_id"])
+        new_productrating.product = Product.objects.get(pk=request.data["product"])
+        new_productrating.customer = Customer.objects.get(user=request.auth.user)
         new_productrating.rating = request.data["rating"]
 
         new_productrating.save()
@@ -45,6 +45,20 @@ class ProductRating(ViewSet):
         serializer = ProductRatingSerializer(new_productrating, context={'request': request})
 
         return Response(serializer.data)
+
+    def update(self, request, pk=None):
+        """Handle PUT requests for a park area
+        Returns:
+            Response -- Empty body with 204 status code
+        """
+        productrating = ProductRating.objects.get(pk=pk)
+        productrating.product = Product.objects.get(pk=request.data["product"])
+        productrating.customer = Customer.objects.get(user=request.auth.user)
+        productrating.rating = request.data["rating"]
+
+        productrating.save()
+
+        return Response({}, status=status.HTTP_204_NO_CONTENT)
 
     def retrieve(self, request, pk=None):
         """Handle GET requests for single order/product relationship
