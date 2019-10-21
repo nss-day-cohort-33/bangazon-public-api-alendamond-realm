@@ -22,7 +22,8 @@ class ProductSerializer(serializers.HyperlinkedModelSerializer):
         )
 
         fields = ('id', 'name', 'price', 'description', 'quantity',
-        'city', 'created_at', 'image', 'product_type_id', 'customer_id', 'total_sold', 'product_type')
+        'city', 'created_at', 'image', 'product_type_id', 'customer_id',
+        'total_sold', 'product_type')
         depth = 2
 
 

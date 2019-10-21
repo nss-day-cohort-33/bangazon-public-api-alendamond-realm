@@ -5,8 +5,6 @@ from django.db import models
 from .customer import Customer
 from .producttype import ProductType
 
-
-
 class Product(SafeDeleteModel):
     """
     Creates table for product and method for calculating current inventory of a user's products.
